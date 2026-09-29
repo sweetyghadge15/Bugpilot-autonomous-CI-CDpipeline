@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BugPilot — Autonomous Code Repair</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">B</div><span>bugpilot</span><span class="beta">MVP</span></div>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav>
+        <a class="nav-item active" href="#"><span>◈</span> Code analysis</a>
+        <a class="nav-item" href="#findings"><span>⌘</span> Findings <span class="nav-count" id="sidebar-count">0</span></a>
+        <a class="nav-item" href="#repair"><span>✳</span> Repair & test</a>
+        <a class="nav-item" href="#pull-request"><span>⑂</span> Pull requests</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="secure-card"><div class="secure-icon">✓</div><div><strong>Safety first</strong><p>Code execution is disabled until an isolated runner is configured.</p></div></div>
+        <div class="profile-row"><div class="avatar" id="avatar">?</div><div class="profile-text"><strong id="user-name">Not connected</strong><small id="user-state">GitHub account</small></div><button id="logout" class="icon-button hidden" title="Sign out">↗</button></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div><span class="crumb">Workspace</span><span class="crumb-sep">/</span><strong>Code analysis</strong></div><div class="top-actions"><span class="status-dot"></span><span id="connection-status">Demo mode</span><a class="help-link" href="#how-it-works">How it works ↗</a></div></header>
+      <section class="welcome">
+        <div><div class="eyebrow"><span class="spark">✦</span> AUTONOMOUS CODE REPAIR</div><h1>Find the bug. <span>Prove the fix.</span></h1><p>Connect a repository to inspect source code, locate suspicious lines, and prepare a safe repair workflow.</p></div>
+        <div class="hero-badge"><div class="hero-badge-icon">⌘</div><div><strong>Repository intelligence</strong><small>Scan · Explain · Verify</small></div></div>
+      </section>
+
+      <section class="connect-card">
+        <div class="section-heading"><div class="step-number">01</div><div><h2>Connect your repository</h2><p>Use a repository you own or are authorized to inspect.</p></div><span class="tag"><span class="tiny-dot"></span> GitHub</span></div>
+        <div class="auth-row"><div class="github-symbol">◉</div><div class="auth-copy"><strong id="auth-title">Connect your GitHub account</strong><p id="auth-description">Sign in to analyze repositories accessible to your account.</p></div><a id="github-login" class="button button-dark" href="/auth/github">Continue with GitHub <span>↗</span></a></div>
+        <div class="or-divider"><span>THEN ENTER A REPOSITORY URL</span></div>
+        <form id="analyze-form"><label for="repo-url">Repository URL</label><div class="input-row"><div class="input-prefix">↗</div><input id="repo-url" type="url" placeholder="https://github.com/owner/repository" required><button class="button button-primary" id="analyze-button" type="submit"><span>⌕</span> Analyze repository</button></div><div class="input-hint"><span>ⓘ</span> Public repositories can be analyzed after sign-in. Private repositories require authorized access.</div></form>
+      </section>
+
+      <section class="metrics" aria-label="Analysis summary">
+        <div class="metric-card"><div class="metric-top"><span>FILES SCANNED</span><span class="metric-icon blue">▤</span></div><div class="metric-value" id="files-value">—</div><div class="metric-note">Source files inspected</div></div>
+        <div class="metric-card"><div class="metric-top"><span>FINDINGS</span><span class="metric-icon orange">⌕</span></div><div class="metric-value" id="findings-value">—</div><div class="metric-note">Items needing review</div></div>
+        <div class="metric-card"><div class="metric-top"><span>FIXES VERIFIED</span><span class="metric-icon green">✓</span></div><div class="metric-value" id="verified-value">0</div><div class="metric-note">Requires sandbox test run</div></div>
+        <div class="metric-card"><div class="metric-top"><span>REPAIR STATUS</span><span class="metric-icon purple">✳</span></div><div class="metric-value metric-word" id="repair-value">Ready</div><div class="metric-note">No changes pushed</div></div>
+      </section>
+
+      <section class="results-section" id="findings">
+        <div class="results-heading"><div><div class="eyebrow">02 / ANALYSIS RESULTS</div><h2>Findings & explanations</h2><p id="results-subtitle">Run an analysis to see affected files, line numbers, and suggested next steps.</p></div><button class="button button-outline" id="demo-button">View sample results</button></div>
+        <div class="results-toolbar"><div class="tabs"><button class="tab active" data-filter="all">All findings <span id="all-count">0</span></button><button class="tab" data-filter="high">High</button><button class="tab" data-filter="medium">Medium</button><button class="tab" data-filter="low">Low / Info</button></div><div class="filter-label">Sorted by severity</div></div>
+        <div id="findings-list" class="findings-list"><div class="empty-state"><div class="empty-graphic"><span>⌕</span></div><h3>Your code findings will appear here</h3><p>Connect a GitHub account and analyze a repository to identify suspicious code patterns.</p><div class="empty-steps"><span>01 Scan files</span><span>→</span><span>02 Explain issues</span><span>→</span><span>03 Review fixes</span></div></div></div>
+        <div class="analysis-note" id="analysis-note"><span>ⓘ</span><span>Static checks are signals, not proof of a bug. A real fix must be reviewed and verified with the project's tests.</span></div>
+      </section>
+
+      <section class="workflow-grid" id="repair">
+        <div class="workflow-card"><div class="workflow-card-top"><span class="workflow-icon violet">✳</span><span class="tag tag-muted">NEXT STEP</span></div><h3>Repair workspace</h3><p>Review a proposed patch side-by-side with the original source before accepting changes.</p><div class="mini-status"><span class="status-pill status-pending">Awaiting findings</span></div><button class="text-button" id="repair-info">How repair works <span>→</span></button></div>
+        <div class="workflow-card"><div class="workflow-card-top"><span class="workflow-icon teal">▣</span><span class="tag tag-muted">ISOLATED</span></div><h3>Docker test sandbox</h3><p>Run tests in a disposable container with resource limits and no access to application secrets.</p><div class="mini-status"><span class="status-pill status-disabled" id="docker-status">Runner not configured</span></div><button class="text-button" id="docker-info">Sandbox requirements <span>→</span></button></div>
+        <div class="workflow-card" id="pull-request"><div class="workflow-card-top"><span class="workflow-icon green">⑂</span><span class="tag tag-muted">HUMAN APPROVAL</span></div><h3>Pull request</h3><p>Review the final diff and passing test evidence, then explicitly approve publishing the fix.</p><div class="mini-status"><span class="status-pill status-pending">No PR created</span></div><button class="text-button" id="pr-info">Publishing workflow <span>→</span></button></div>
+      </section>
+
+      <section class="how-section" id="how-it-works"><div class="eyebrow">THE WORKFLOW</div><h2>From suspicious line to reviewed pull request</h2><div class="how-steps"><div><b>1</b><strong>Analyze</strong><p>Inspect authorized source files and explain each finding.</p></div><div><b>2</b><strong>Propose</strong><p>Prepare a small, reviewable patch with a clear rationale.</p></div><div><b>3</b><strong>Verify</strong><p>Run tests in an isolated sandbox and compare outcomes.</p></div><div><b>4</b><strong>Approve</strong><p>Let the repository owner approve a branch and pull request.</p></div></div></section>
+      <footer><span>BugPilot <span class="footer-muted">· Autonomous Code Repair MVP</span></span><span>Built for safer, reviewable fixes.</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
